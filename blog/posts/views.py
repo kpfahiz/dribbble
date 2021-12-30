@@ -55,7 +55,6 @@ class PostListView(ListAPIView):
             queryset_list = queryset_list.filter(
                             Q(title__icontains=query) |
                             Q(content__icontains=query) |
-                            #Q(author__username__icontains=query) |
                             Q(timestamp__icontains=query)
                             ).distinct()
         return queryset_list
@@ -73,14 +72,13 @@ class PostUpdateView(RetrieveUpdateAPIView):
     serializer_class = PostCreateSerializer
     permission_classes = [IsAuthenticated]
 
-    def perform_update(self, serializer):
-        serializer.save(author=self.request.user)
 
 class PostDeleteView(DestroyAPIView):
     ''' This View used to Delete The Post '''
 
     queryset = Post.objects.all()
     serializer_class = PostCreateSerializer
+    permission_classes = [IsAuthenticated]
 
 class PostLikeView(ListAPIView):
     ''' This View used to Like The Post '''
